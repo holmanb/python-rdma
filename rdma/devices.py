@@ -344,15 +344,27 @@ class RDMADevice(SysFSCache):
     @property
     def board_id(self):
         "Device board ID string."
-        return self._cached_sysfs("board_id");
+        try:
+            return self._cached_sysfs("board_id");
+        except IOError:
+            self._cache["board_id"] = None;
+            return None;
     @property
     def hw_ver(self):
         "Device hardware version string."
-        return self._cached_sysfs("hw_rev");
+        try:
+            return self._cached_sysfs("hw_rev");
+        except IOError:
+            self._cache["hw_rev"] = None;
+            return None;
     @property
     def hca_type(self):
         "HCA type string."
-        return self._cached_sysfs("hca_type");
+        try:
+            return self._cached_sysfs("hca_type");
+        except IOError:
+            self._cache["hca_type"] = None;
+            return None;
 
     def __str__(self):
         return self.name;
